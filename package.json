@@ -1,0 +1,25 @@
+{
+  "name": "@kbco/provider",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "./node_modules/mocha/bin/mocha -R spec tests/*spec.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kbcomputers/provider.git"
+  },
+  "author": "Austin Kregel",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kbcomputers/provider/issues"
+  },
+  "homepage": "https://github.com/kbcomputers/provider#readme",
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "express": "^4.16.2",
+    "mocha": "^4.1.0",
+    "supertest": "^3.0.0"
+  }
+}
