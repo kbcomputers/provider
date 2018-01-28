@@ -3,7 +3,6 @@
 Well it's a way to simply define plugins for your package, and register them in a special order.
 
 ## How to use?
-A very simple example (modified from [express's hello world example](http://expressjs.com/en/starter/hello-world.html)).
 ```node
 const Registration = require('@kbco/provider');
 
