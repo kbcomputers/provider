@@ -1,7 +1,7 @@
 {
   "name": "@kbco/provider",
-  "version": "0.0.0",
-  "description": "",
+  "version": "0.0.1",
+  "description": "A simple way to register plugins for your projects",
   "main": "index.js",
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha -R spec tests/*spec.js"
