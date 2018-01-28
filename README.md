@@ -3,7 +3,7 @@
 Well it's a way to simply define plugins for your package, and register them in a special order.
 
 ## How to use?
-```node
+```js
 const Registration = require('@kbco/provider');
 
 const Provider = new Registration();
