@@ -17,19 +17,20 @@ describe('Registering the providers', function () {
     });
     
     it('has an available provider.', function testSlash(done) {
-        Provider.register([
-            './tests/TestProvider'
-        ])
+        Provider.register({
+            'TestProvider': './tests/TestProvider'
+        })
         
-        assert.isTrue(Provider.availableProviders.includes('./tests/TestProvider'))
+        assert.isTrue(Provider.availableProviders.hasOwnProperty('TestProvider'))
+        assert.isTrue(typeof Provider.availableProviders.TestProvider === 'object')
         
         done()
     });
     
     it('has an available provider from a string.', function testSlash(done) {
-        Provider.register('./tests/TestProvider')
+        Provider.register('TestProvider', './tests/TestProvider')
         
-        assert.isTrue(Provider.availableProviders.includes('./tests/TestProvider'))
+        assert.isTrue(Provider.loadedProviders.hasOwnProperty('TestProvider'))
         
         done()
     });
@@ -40,7 +41,19 @@ describe('Registering the providers', function () {
             register() {}
         })
 
-        assert.isTrue(Provider.availableProviders.includes('closure-0'))
+        assert.isTrue(Provider.availableProviders.hasOwnProperty('closure-0'))
+        
+        done()
+    });
+    
+    it('does not register the closure provider if it returns false', function testSlash(done) {
+        Provider.register({
+            'TestProviderNoLoad':'./tests/TestProviderNoLoad'
+        })
+
+        assert.isTrue(Provider.availableProviders.hasOwnProperty('TestProviderNoLoad'))
+        assert.isFalse(Provider.loadedProviders.hasOwnProperty('TestProviderNoLoad'))
+        assert.isTrue(Object.keys(Provider.loadedProviders).length === 0)
         
         done()
     });
