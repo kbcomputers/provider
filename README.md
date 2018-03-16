@@ -9,15 +9,15 @@ const Registration = require('@kbco/provider');
 const Provider = new Registration();
 
 // Provider will register every service in the order you list them in.
-Provider.register([
-    './tests/TestProvider',
-    '@re-base/termianl',
-    {
+Provider.register({
+    'TestProvider': './tests/TestProvider',
+    'terminal': '@re-base/termianl',
+    'customProvider': {
         register() {
         
         }
     }
-])
+})
 ```
 
 The following is an example service provider which would register two routes with express.
@@ -34,6 +34,9 @@ module.exports = {
     register() {
         router.get('/register', (req, res) => ('Register an account!!'))
         router.get('/login', (req, res) => ('Log into your account!!'))
+        // Returning an object binds the objects to the registered service making
+        // them more globally accessable.
+        return router
     }
 }
 ```
