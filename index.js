@@ -1,35 +1,57 @@
 module.exports = class Registration {
     constructor() {
-        this.availableProviders = [];
+        this.availableProviders = {};
+        this.loadedProviders = {};
         this.closureCount = 0;
     }
     
     register(providerNames) {
-        if (!Array.isArray(providerNames)) {
-            providerNames = [providerNames];
+        if (typeof providerNames === 'string') {
+            let [name, provider] = arguments
+            
+            providerNames = {};
+            providerNames[name] = provider;
         }
-        let providers = providerNames.map(provider => {
-            let p = {}
+        
+        for (let key in providerNames) {
+            let provider = providerNames[key];
             
+            // Check if the provider is a function. if it is, accept it, and make it 
+            // conform to the register style object
             if (typeof provider === 'function') {
-                p['closure-' + this.closureCount ++] = {register:provider}
-            } else if (typeof provider === 'object') {
-                p['closure-' + this.closureCount ++] = provider
-            } else {
-                p[provider] = require(provider);
+                this.availableProviders['closure-' + this.closureCount ++] = {register:provider}
+                delete providerNames[key]
+
+            } else if (typeof provider === 'object' && provider.hasOwnProperty('register')) {
+                // pass the object as 
+                this.availableProviders[key] = provider
+            } else if(typeof provider === 'string'){
+                try {
+                    // Try to require the provider, if we cannot then just log the error.
+                    this.availableProviders[key] = require(provider);
+                } catch (err) {
+                    console.log('[!] Failed to load provider [' + provider + ']');
+                }
             }
             
-            return p;
-        }).reduce((f,s) => (Object.assign(f,s)))
+        }
 
-        for (let provider in providers) {
-            if (
-                providers[provider].hasOwnProperty('register') && 
-                typeof providers[provider].register === 'function' &&
-                providers[provider].register() !== false
-            ) {
-                this.availableProviders.push(provider);
+        // Loop through the providers
+        for (let provider in this.availableProviders) {
+            if (typeof this.availableProviders[provider].register !== 'function') {
+                // If register isn't a function, don't try to run it...
+                break;
             }
+            
+            // Run register
+            let result = this.availableProviders[provider].register();
+            
+            // If it returns false don't load it.
+            if (result == false) {
+                break;
+            }
+            
+            this.loadedProviders[provider] = result;
         }
     }
 }
