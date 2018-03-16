@@ -1,6 +1,5 @@
 module.exports = {
     register() {
-        return {
-        }
+        return false;
     }
 }
