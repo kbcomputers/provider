@@ -1,7 +1,7 @@
 module.exports = class Registration {
     constructor() {
-        this.availableProviders = {};
-        this.loadedProviders = {};
+        this.available = {};
+        this.loaded = {};
         this.closureCount = 0;
     }
     
@@ -19,16 +19,16 @@ module.exports = class Registration {
             // Check if the provider is a function. if it is, accept it, and make it 
             // conform to the register style object
             if (typeof provider === 'function') {
-                this.availableProviders['closure-' + this.closureCount ++] = {register:provider}
+                this.available['closure_' + this.closureCount ++] = {register:provider}
                 delete providerNames[key]
 
             } else if (typeof provider === 'object' && provider.hasOwnProperty('register')) {
                 // pass the object as 
-                this.availableProviders[key] = provider
+                this.available[key] = provider
             } else if(typeof provider === 'string'){
                 try {
                     // Try to require the provider, if we cannot then just log the error.
-                    this.availableProviders[key] = require(provider);
+                    this.available[key] = require(provider);
                 } catch (err) {
                     console.log('[!] Failed to load provider [' + provider + ']');
                 }
@@ -37,21 +37,21 @@ module.exports = class Registration {
         }
 
         // Loop through the providers
-        for (let provider in this.availableProviders) {
-            if (typeof this.availableProviders[provider].register !== 'function') {
+        for (let provider in this.available) {
+            if (typeof this.available[provider].register !== 'function') {
                 // If register isn't a function, don't try to run it...
                 break;
             }
             
             // Run register
-            let result = this.availableProviders[provider].register();
+            let result = this.available[provider].register();
             
             // If it returns false don't load it.
             if (result == false) {
                 break;
             }
             
-            this.loadedProviders[provider] = result;
+            this.loaded[provider] = result;
         }
     }
 }

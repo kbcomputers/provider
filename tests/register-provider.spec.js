@@ -21,8 +21,8 @@ describe('Registering the providers', function () {
             'TestProvider': './tests/TestProvider'
         })
         
-        assert.isTrue(Provider.availableProviders.hasOwnProperty('TestProvider'))
-        assert.isTrue(typeof Provider.availableProviders.TestProvider === 'object')
+        assert.isTrue(Provider.available.hasOwnProperty('TestProvider'))
+        assert.isTrue(typeof Provider.available.TestProvider === 'object')
         
         done()
     });
@@ -30,7 +30,7 @@ describe('Registering the providers', function () {
     it('has an available provider from a string.', function testSlash(done) {
         Provider.register('TestProvider', './tests/TestProvider')
         
-        assert.isTrue(Provider.loadedProviders.hasOwnProperty('TestProvider'))
+        assert.isTrue(Provider.loaded.hasOwnProperty('TestProvider'))
         
         done()
     });
@@ -41,7 +41,7 @@ describe('Registering the providers', function () {
             register() {}
         })
 
-        assert.isTrue(Provider.availableProviders.hasOwnProperty('closure-0'))
+        assert.isTrue(Provider.available.hasOwnProperty('closure_0'))
         
         done()
     });
@@ -51,9 +51,9 @@ describe('Registering the providers', function () {
             'TestProviderNoLoad':'./tests/TestProviderNoLoad'
         })
 
-        assert.isTrue(Provider.availableProviders.hasOwnProperty('TestProviderNoLoad'))
-        assert.isFalse(Provider.loadedProviders.hasOwnProperty('TestProviderNoLoad'))
-        assert.isTrue(Object.keys(Provider.loadedProviders).length === 0)
+        assert.isTrue(Provider.available.hasOwnProperty('TestProviderNoLoad'))
+        assert.isFalse(Provider.loaded.hasOwnProperty('TestProviderNoLoad'))
+        assert.isTrue(Object.keys(Provider.loaded).length === 0)
         
         done()
     });
